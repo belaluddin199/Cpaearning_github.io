@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPM Work Online</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #0f0f23; /* Dark blue-black background */
+        color: #e0e0e0; /* Light gray text */
+    }
+    
+    .header {
+        text-align: center;
+        padding: 15px;
+        background: linear-gradient(90deg, #1a1a3a 50%, #0a0a1a 50%);
+        color: #ffffff;
+    }
+    
+    .logo {
+        width: 80px;
+        height: 80px;
+        margin: 10px auto;
+        background: linear-gradient(135deg, #6e48aa, #9d50bb);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: white;
+    }
+    
+    .title {
+        text-align: center;
+        margin: 20px 0;
+        color: #d1d1ff; /* Light purple text */
+    }
+    
+    .options {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin: 30px 0;
+    }
+    
+    .option-btn {
+        background: linear-gradient(to right, #ffcc00, #ff9900);
+        color: #1a1a1a;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        width: 200px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .form-container {
+        background: linear-gradient(90deg, #1a1a3a 50%, #0a0a1a 50%);
+        color: #e0e0e0;
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #d1d1ff;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #6e48aa;
+        background-color: #1a1a3a;
+        color: white;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(to right, #ffcc00, #ff9900);
+        color: #1a1a1a;
+        border: none;
+        padding: 12px;
+        border-radius: 25px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .user-info {
+        text-align: center;
+        margin: 20px 0;
+        color: #d1d1ff;
+    }
+    
+    .back-btn {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(110, 72, 170, 0.5);
+        border: none;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .admin-panel {
+        background: linear-gradient(90deg, #1a1a3a 50%, #0a0a1a 50%);
+        color: #e0e0e0;
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .user-list {
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .user-item {
+        background: rgba(110, 72, 170, 0.2);
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border-left: 3px solid #9d50bb;
+    }
+    
+    .hidden {
+        display: none;
+    }
+</style>
+</head>
+<body>
+    <!-- Page 1: Home -->
+    <div id="page1" class="page">
+        <div class="header">
+            <h1>CPM Work Online</h1>
+            <div class="logo">CWO</div>
+        </div>
+        <div class="title">
+            <h2>Welcome To The Freelancing Bot</h2>
+        </div>
+        <div class="options">
+            <button class="option-btn" onclick="showPage('page3')">Work Now</button>
+            <button class="option-btn" onclick="showPage('page2')">Registration</button>
+        </div>
+        <div class="options" style="margin-top: auto; margin-bottom: 30px;">
+            <button class="option-btn" onclick="showPage('adminLogin')">Admin Panel</button>
+        </div>
+    </div>
+    
+    <!-- Page 2: Registration -->
+    <div id="page2" class="page hidden">
+        <button class="back-btn" onclick="showPage('page1')">←</button>
+        <div class="form-container">
+            <h2 class="title">Registration</h2>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="bkashNumber">Bkash Number</label>
+                <input type="text" id="bkashNumber" placeholder="Enter your Bkash number">
+            </div>
+            <button class="submit-btn" onclick="registerUser()">Registration</button>
+        </div>
+    </div>
+    
+    <!-- Page 3: Search Profile -->
+    <div id="page3" class="page hidden">
+        <button class="back-btn" onclick="showPage('page1')">←</button>
+        <div class="form-container">
+            <h2 class="title">Search profile</h2>
+            <div class="form-group">
+                <label for="searchUsername">Search Username</label>
+                <input type="text" id="searchUsername" placeholder="Enter username to search">
+            </div>
+            <button class="submit-btn" onclick="searchUser()">Search</button>
+        </div>
+    </div>
+    
+    <!-- Page 4: User Profile -->
+    <div id="page4" class="page hidden">
+        <button class="back-btn" onclick="showPage('page3')">←</button>
+        <div class="header">
+            <h1>CPM Work Online</h1>
+        </div>
+        <div class="user-info">
+            <h2 id="userFullName"></h2>
+            <p id="userUsername"></p>
+            <p>Registration #<span id="userSerial"></span></p>
+        </div>
+        <div class="options">
+            <button class="option-btn" onclick="openImpressionLink()">Impression</button>
+            <button class="option-btn" onclick="openSignupLink()">Sign_up</button>
+        </div>
+    </div>
+    
+    <!-- Admin Login Page -->
+    <div id="adminLogin" class="page hidden">
+        <button class="back-btn" onclick="showPage('page1')">←</button>
+        <div class="admin-panel">
+            <h2>Admin Panel</h2>
+            <div class="form-group">
+                <label for="adminPassword">Password</label>
+                <input type="password" id="adminPassword" placeholder="Enter admin password">
+            </div>
+            <button class="submit-btn" onclick="checkAdminPassword()">Confirm</button>
+        </div>
+    </div>
+    
+    <!-- Admin User List Page -->
+    <div id="adminUserList" class="page hidden">
+        <button class="back-btn" onclick="showPage('adminLogin')">←</button>
+        <div class="admin-panel">
+            <h2>User Lists</h2>
+            <div class="user-list" id="userListContainer">
+                <!-- User list will be populated here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // User data storage
+        let users = JSON.parse(localStorage.getItem('cpmUsers')) || [];
+        let currentUser = null;
+        
+        // Show a specific page and hide others
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+        
+        // Register a new user
+        function registerUser() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const bkashNumber = document.getElementById('bkashNumber').value.trim();
+            
+            if (!fullName || !username || !bkashNumber) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const user = {
+                id: Date.now(),
+                fullName,
+                username,
+                bkashNumber,
+                serialNumber: users.length + 1
+            };
+            
+            users.push(user);
+            localStorage.setItem('cpmUsers', JSON.stringify(users));
+            
+            alert('Registration successful!');
+            showPage('page1');
+            
+            // Clear form
+            document.getElementById('fullName').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('bkashNumber').value = '';
+        }
+        
+        // Search for a user
+        function searchUser() {
+            const searchTerm = document.getElementById('searchUsername').value.trim().toLowerCase();
+            
+            if (!searchTerm) {
+                alert('Please enter a username to search');
+                return;
+            }
+            
+            const foundUser = users.find(user => 
+                user.username.toLowerCase().includes(searchTerm)
+            );
+            
+            if (foundUser) {
+                currentUser = foundUser;
+                displayUserProfile(foundUser);
+                showPage('page4');
+            } else {
+                alert('User not found');
+            }
+            
+            document.getElementById('searchUsername').value = '';
+        }
+        
+        // Display user profile
+        function displayUserProfile(user) {
+            document.getElementById('userFullName').textContent = user.fullName;
+            document.getElementById('userUsername').textContent = user.username;
+            document.getElementById('userSerial').textContent = user.serialNumber;
+        }
+        
+        // Open impression link
+        function openImpressionLink() {
+            if (!currentUser) return;
+            const baseUrl = "https://101000.shop/92af22c7480006e3af1d/2bb8de396d/?placementName=";
+            window.open(baseUrl + currentUser.username, '_blank');
+        }
+        
+        // Open signup link
+        function openSignupLink() {
+            if (!currentUser) return;
+            const baseUrl = "https://101000.shop/92af22c7480006e3af1d/2bb8de396d/?placementName=";
+            window.open(baseUrl + currentUser.username, '_blank');
+        }
+        
+        // Check admin password
+        function checkAdminPassword() {
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === "373324") {
+                displayUserList();
+                showPage('adminUserList');
+            } else {
+                alert('Incorrect password');
+            }
+            
+            document.getElementById('adminPassword').value = '';
+        }
+        
+        // Display all users in admin panel
+        function displayUserList() {
+            const container = document.getElementById('userListContainer');
+            container.innerHTML = '';
+            
+            if (users.length === 0) {
+                container.innerHTML = '<p>No users registered yet</p>';
+                return;
+            }
+            
+            users.forEach(user => {
+                const userElement = document.createElement('div');
+                userElement.className = 'user-item';
+                userElement.innerHTML = `
+                    <p><strong>#${user.serialNumber}</strong></p>
+                    <p><strong>Name:</strong> ${user.fullName}</p>
+                    <p><strong>Username:</strong> ${user.username}</p>
+                    <p><strong>Bkash:</strong> ${user.bkashNumber}</p>
+                `;
+                container.appendChild(userElement);
+            });
+        }
+        
+        // Initialize the app
+        showPage('page1');
+    </script>
+</body>
+</html>
